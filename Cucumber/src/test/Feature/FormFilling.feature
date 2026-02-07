@@ -1,5 +1,5 @@
 Feature: Form Filling 
-@filling
+@sanity
 Scenario: Form Filling with Credential
 Given User open Form Filling website as "https://demoqa.com/automation-practice-form"
 When User enter first name "Ashish"
