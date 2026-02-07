@@ -8,12 +8,12 @@ on:
         required: false
         default: "@regression"
 
-push:
-  branches:
-    - master
-    - main
-    - develop
-    - "feature/**"
+  push:
+    branches:
+      - master
+      - main
+      - develop
+      - "feature/**"
 
 jobs:
   regression:
@@ -39,7 +39,6 @@ jobs:
         run: |
           google-chrome --version || chromium-browser --version || chromium --version
 
-      # ✅ Run Maven from /Cucumber
       - name: Run regression from Cucumber folder
         working-directory: ./Cucumber
         run: |
@@ -48,14 +47,14 @@ jobs:
             -Dbrowser="${BROWSER}" \
             -Dheadless="${HEADLESS}"
 
-   - name: Upload reports (always)
-  if: always()
-  uses: actions/upload-artifact@v4
-  with:
-    name: cucumber-reports
-    path: |
-      target/surefire-reports/**
-      target/cucumber.json
-      target/cucumber-report.html
-      target/screenshots/**
-      target/logs/**
+      - name: Upload reports (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cucumber-reports
+          path: |
+            Cucumber/target/surefire-reports/**
+            Cucumber/target/cucumber.json
+            Cucumber/target/cucumber-report.html
+            Cucumber/target/screenshots/**
+            Cucumber/target/logs/**
