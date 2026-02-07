@@ -11,9 +11,6 @@ on:
   push:
     branches:
       - master
-      - main
-      - develop
-      - "feature/**"
 
 jobs:
   regression:
@@ -36,8 +33,7 @@ jobs:
           cache: maven
 
       - name: Verify Chrome
-        run: |
-          google-chrome --version || chromium-browser --version || chromium --version
+        run: google-chrome --version || chromium-browser --version || chromium --version
 
       - name: Run regression from Cucumber folder
         working-directory: ./Cucumber
@@ -47,10 +43,10 @@ jobs:
             -Dbrowser="${BROWSER}" \
             -Dheadless="${HEADLESS}"
 
-           - name: Upload reports (always)
+      - name: Upload reports (always)
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: cucumber-reports
+          name: cucumber-artifacts
           path: |
             Cucumber/target/**
