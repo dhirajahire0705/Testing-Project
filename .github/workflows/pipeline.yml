@@ -1,0 +1,61 @@
+name: Regression (Chrome + Cucumber)
+
+on:
+  workflow_dispatch:
+    inputs:
+      tags:
+        description: "Cucumber tag expression"
+        required: false
+        default: "@regression"
+  push:
+    branches:
+      - main
+      - develop
+      - "feature/**"
+    paths-ignore:
+      - "*/.md"
+      - "README*"
+
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+
+    env:
+      BROWSER: chrome
+      HEADLESS: "true"
+      TAGS: ${{ github.event.inputs.tags || '@regression' }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      # Chrome is usually present, but this confirms it's available.
+      - name: Verify Chrome
+        run: |
+          google-chrome --version || chromium-browser --version || chromium --version
+
+      - name: Run regression
+        run: |
+          mvn -B clean test \
+            -Dcucumber.filter.tags="${TAGS}" \
+            -Dbrowser="${BROWSER}" \
+            -Dheadless="${HEADLESS}"
+
+      - name: Upload reports (always)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: regression-reports
+          path: |
+            target/surefire-reports/**
+            target/cucumber*.json
+            target/*/cucumber-reports/*
+            target/screenshots/**
+            target/logs/**
