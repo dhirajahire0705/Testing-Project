@@ -13,9 +13,9 @@ import io.github.bonigarcia.wdm.WebDriverManager;
 
 public class LoginStepDef {
 	
-	WebDriver driver;
-	LoginPage LoginPg;
-	
+	WebDriverManager.chromedriver().setup();
+    driver = new ChromeDriver(options);
+
 	@Before
 	public void setup() {
 		
