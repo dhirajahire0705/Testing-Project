@@ -7,6 +7,7 @@ on:
         description: "Cucumber tag expression"
         required: false
         default: "@regression"
+
   push:
     branches:
       - main
@@ -36,12 +37,13 @@ jobs:
           java-version: "17"
           cache: maven
 
-      # Chrome is usually present, but this confirms it's available.
       - name: Verify Chrome
         run: |
           google-chrome --version || chromium-browser --version || chromium --version
 
-      - name: Run regression
+      # ✅ Run Maven from /Cucumber
+      - name: Run regression from Cucumber folder
+        working-directory: ./Cucumber
         run: |
           mvn -B clean test \
             -Dcucumber.filter.tags="${TAGS}" \
@@ -54,8 +56,8 @@ jobs:
         with:
           name: regression-reports
           path: |
-            target/surefire-reports/**
-            target/cucumber*.json
-            target/*/cucumber-reports/*
-            target/screenshots/**
-            target/logs/**
+            Cucumber/target/surefire-reports/**
+            Cucumber/target/cucumber*.json
+            Cucumber/target/*/cucumber-reports/*
+            Cucumber/target/screenshots/**
+            Cucumber/target/logs/**
