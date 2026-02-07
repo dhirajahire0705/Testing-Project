@@ -7,7 +7,9 @@ import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage {
 
-WebDriver ldriver;
+	WebDriverManager.chromedriver().setup();
+driver = new ChromeDriver(options);
+
 	
 	public  LoginPage(WebDriver rdriver)
 	{
