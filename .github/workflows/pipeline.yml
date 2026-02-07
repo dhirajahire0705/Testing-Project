@@ -50,14 +50,14 @@ jobs:
             -Dbrowser="${BROWSER}" \
             -Dheadless="${HEADLESS}"
 
-      - name: Upload reports (always)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: regression-reports
-          path: |
-            Cucumber/target/surefire-reports/**
-            Cucumber/target/cucumber*.json
-            Cucumber/target/*/cucumber-reports/*
-            Cucumber/target/screenshots/**
-            Cucumber/target/logs/**
+   - name: Upload reports (always)
+  if: always()
+  uses: actions/upload-artifact@v4
+  with:
+    name: cucumber-reports
+    path: |
+      target/surefire-reports/**
+      target/cucumber.json
+      target/cucumber-report.html
+      target/screenshots/**
+      target/logs/**
